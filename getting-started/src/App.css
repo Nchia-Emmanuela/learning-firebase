@@ -41,10 +41,13 @@
   border: 1px;
 }
 .btn{
-  padding: "3px"; 
-  border-radius: "5px";
-  border: "none";
-  background: #61dafb;
+  padding: 7px; 
+  border-radius: 10px;
+  border: none;
   cursor: pointer;
-  margin-right: 3px;
+  margin-left: 5px;
+  background: #61dafb;
+  color: #fff;
+  width: auto;
+  font-size: 16px;
 }

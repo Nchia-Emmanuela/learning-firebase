@@ -1,11 +1,13 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { db } from "./firebase-config";
-import { collection, getDocs, addDoc } from "@firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, doc } from "@firebase/firestore";
 
 function App() {
   const [users, setUsers] = useState();
   const userCollectionRef = collection(db, "users");
+
+  // read operation
   useEffect(() => {
     const getUsers = async () => {
       const data = await getDocs(userCollectionRef);
@@ -24,9 +26,18 @@ function App() {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
 
+  // create operation
   const createUser = async () => {
-    await addDoc(userCollectionRef, {name:newUser.name, age:newUser.age})
-  }
+    await addDoc(userCollectionRef, { name: newUser.name, age: Number(newUser.age) });
+  };
+
+  // update operation
+  const upateUser = async (id, age) => {
+    const userDoc = doc(db, "users", id)
+    const newField = {age: age + 1}
+    await updateDoc(userDoc, newField)
+  };
+
   return (
     <div className="App">
       <input
@@ -41,13 +52,22 @@ function App() {
         name="age"
         onChange={handleChange}
       />
-      <button onClick={createUser} className="btn">Add User</button>
+      <button onClick={createUser} className="btn">
+        Add User
+      </button>
       {users?.map((user) => {
         return (
           <div style={{ fontSize: "30px" }}>
             <p>
               <span style={{ fontWeight: "bold" }}>Name:</span> {user.name},{" "}
               <span style={{ fontWeight: "bold" }}>age:</span> {user.age}
+              <button
+                className="btn"
+                style={{ background: "gray" }}
+                onClick={() => upateUser(user.id, user.age)}
+              >
+                Increase Age
+              </button>
             </p>
           </div>
         );
