@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  border: 1px;
+}
+.btn{
+  padding: "3px"; 
+  border-radius: "5px";
+  border: "none";
+  background: #61dafb;
+  cursor: pointer;
+  margin-right: 3px;
+}
