@@ -3,8 +3,9 @@ import { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { db, auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-function CreatePost() {
+function CreatePost({ isAuth }) {
   const navigate = useNavigate();
   const postCollectionRef = collection(db, "post");
   const [blog, setBlog] = useState({
@@ -24,12 +25,18 @@ function CreatePost() {
     });
     navigate("/");
   };
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <div className="createPostPage">
       <div className="cpContainer">
         <h1>Create Post</h1>
         <div className="inputGp">
-          <label>Title:</label>
+          <label>Tittle:</label>
           <input
             name="title"
             className="input"
