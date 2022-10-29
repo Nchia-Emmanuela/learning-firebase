@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firestoreConfig";
 import "./App.css";
 
@@ -9,6 +9,10 @@ function App() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
+  const [user, setUser] = useState({})
+onAuthStateChanged(auth, (currentUser) => {
+  setUser(currentUser)
+})
   const register = async () => {
     try {
       const user = await createUserWithEmailAndPassword(
@@ -23,7 +27,9 @@ function App() {
   };
   const login = async () => {};
 
-  const logOut = async () => {};
+  const logOut = async () => {
+    await signOut(auth)
+  };
 
   return (
     <div className="App">
@@ -61,7 +67,8 @@ function App() {
         <button> Login </button>
       </div>
       <h4> User Login</h4>
-      <button> Sign Out </button>
+      {user?.email }
+      <button onClick={logOut}> Sign Out </button>
     </div>
   );
 }
