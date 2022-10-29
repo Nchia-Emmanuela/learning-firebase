@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db, auth } from "../firebaseConfig";
 
-function Home() {
+function Home( { isAuth }) {
   const [postList, setPostList] = useState([]);
   const postCollectionRef = collection(db, "post");
 
@@ -16,21 +16,21 @@ function Home() {
   }, []);
 
   const deletePost = async (id) => {
-    const postDoc = doc(db, "post", id)
-    await deleteDoc(postDoc)
-  }
+    const postDoc = doc(db, "post", id);
+    await deleteDoc(postDoc);
+  };
   return (
     <div className="homePage">
       <h1>welcome</h1>
       {postList?.map((post) => {
         return (
-          <div className="post">
+          <div className="post" key={post.id}>
             <div className="postHeader">
               <div className="title">
                 <h1>{post.title}</h1>
               </div>
               <div className="deletePost">
-                <button onClick={() => deleteDoc(post.id)}> &#128465;</button>
+                {isAuth && post.author.id === auth.currentUser.uid && <button onClick={() => {deletePost(post.id)}}> &#128465;</button>}
               </div>
             </div>
             <div className="postTextContainer">{post.postText}</div>
