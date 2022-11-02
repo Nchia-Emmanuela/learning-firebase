@@ -16,8 +16,10 @@ function App() {
     // make refrence to a specific part(here we create image folder
     // and add image to it.)
     const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-    uploadBytes(imageRef, imageUpload).then(() => {
-      alert("Image Uploaded");
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageList((prev) => [...prev, url]);
+      });
     });
   };
 
